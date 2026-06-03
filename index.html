@@ -676,7 +676,7 @@
           <span class="brand-mark">M</span>
           <span>Método Controle Total</span>
         </a>
-        <a class="nav-link" href="https://pay.cakto.com.br/ohvtghd_911723">Acessar por US$10</a>
+        <a class="nav-link" href="#oferta">Acessar por US$10</a>
       </nav>
     </header>
 
@@ -772,7 +772,7 @@
               <li>Acesso imediato após a compra</li>
               <li>Conteúdo prático e discreto</li>
             </ul>
-            <a class="cta" href="https://pay.cakto.com.br/ohvtghd_911723" id="ctaButton">Quero Acessar Agora</a>
+            <a class="cta" href="#" id="ctaButton">Quero Acessar Agora</a>
           </div>
         </div>
       </section>
@@ -852,8 +852,9 @@
 
     revealItems.forEach((item) => observer.observe(item));
 
-  
-      
+    document.getElementById('ctaButton').addEventListener('click', (event) => {
+      event.preventDefault();
+      alert('Obrigado pelo interesse! Conecte este botão ao seu checkout para vender o ebook por US$10.');
     });
   </script>
 </body>
