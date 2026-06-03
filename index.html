@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Método Controle Total | Ebook Digital</title>
+  <style>
+    :root {
+      --bg: #090909;
+      --surface: #14110f;
+      --surface-2: #1e1714;
+      --red: #b31321;
+      --red-bright: #e02032;
+      --gold: #d6a84f;
+      --gold-soft: #f5d98b;
+      --text: #f8f1e8;
+      --muted: #bdb2a6;
+      --line: rgba(214, 168, 79, 0.24);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(179, 19, 33, 0.23), transparent 26rem),
+        radial-gradient(circle at 82% 20%, rgba(214, 168, 79, 0.18), transparent 24rem),
+        linear-gradient(135deg, #070707 0%, #140c0d 54%, #070707 100%);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        url("assets/casal-fundo.png"),
+        url("assets/casal-fundo.png");
+      background-size:
+        min(56vw, 760px) auto,
+        330px auto;
+      background-position:
+        right -70px top 42px,
+        left 26px bottom 120px;
+      background-repeat: no-repeat;
+      opacity: 0.2;
+      filter: saturate(1.18) contrast(1.12);
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.62) 34%, black 100%);
+    }
+
+    .page::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 72% 16%, rgba(224, 32, 50, 0.24), transparent 22rem),
+        radial-gradient(circle at 82% 40%, rgba(214, 168, 79, 0.12), transparent 25rem),
+        linear-gradient(90deg, rgba(9, 9, 9, 0.98) 0%, rgba(9, 9, 9, 0.9) 45%, rgba(9, 9, 9, 0.6) 100%),
+        linear-gradient(180deg, rgba(9, 9, 9, 0.54), rgba(9, 9, 9, 0.94));
+    }
+
+    .page > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--gold-soft);
+      background: linear-gradient(145deg, rgba(179, 19, 33, 0.28), rgba(214, 168, 79, 0.1));
+      box-shadow: 0 0 24px rgba(214, 168, 79, 0.14);
+    }
+
+    .nav-link {
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--gold-soft);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
+      align-items: center;
+      gap: 46px;
+      padding: 72px 0 68px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--gold-soft);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: var(--red-bright);
+    }
+
+    h1 {
+      max-width: 820px;
+      font-size: clamp(2.45rem, 6vw, 5.5rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+      margin-bottom: 24px;
+    }
+
+    .highlight {
+      color: var(--gold-soft);
+      text-shadow: 0 0 28px rgba(214, 168, 79, 0.22);
+    }
+
+    .subheadline {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.32rem);
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 28px;
+      border: 0;
+      border-radius: 8px;
+      color: #170606;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 16px 40px rgba(214, 168, 79, 0.24);
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 48px rgba(214, 168, 79, 0.32);
+    }
+
+    .price-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid rgba(224, 32, 50, 0.4);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(179, 19, 33, 0.18);
+      font-weight: 700;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .trust-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trust-row span::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .product-panel {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+      justify-items: end;
+      padding-right: 26px;
+    }
+
+    .product-panel::before {
+      content: "";
+      position: absolute;
+      width: min(520px, 88vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(214, 168, 79, 0.22), transparent 62%),
+        radial-gradient(circle, rgba(224, 32, 50, 0.22), transparent 48%);
+      filter: blur(10px);
+      opacity: 0.9;
+    }
+
+    .product-panel::after {
+      content: "Ebook Digital";
+      position: absolute;
+      right: 0;
+      bottom: 56px;
+      z-index: 4;
+      padding: 10px 16px;
+      border: 1px solid rgba(245, 217, 139, 0.45);
+      border-radius: 8px;
+      color: var(--gold-soft);
+      background: rgba(10, 7, 7, 0.82);
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.34);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .ebook {
+      position: relative;
+      z-index: 2;
+      width: min(420px, 82vw);
+      aspect-ratio: 2 / 3;
+      border: 1px solid rgba(245, 217, 139, 0.32);
+      border-radius: 8px;
+      background: #120809;
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.55),
+        30px 26px 0 rgba(214, 168, 79, 0.08),
+        -18px 18px 0 rgba(179, 19, 33, 0.12);
+      overflow: hidden;
+      transform: perspective(980px) rotateY(-7deg) rotateX(1deg);
+    }
+
+    .ebook::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.18), transparent 24%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.34), transparent 14%, transparent 86%, rgba(0, 0, 0, 0.22));
+      pointer-events: none;
+    }
+
+    .ebook::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      z-index: 3;
+      width: 18px;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(255, 255, 255, 0.05), transparent);
+      pointer-events: none;
+    }
+
+    .ebook-cover {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker {
+      color: var(--red-bright);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .benefit,
+    .testimonial,
+    .offer-box {
+      border: 1px solid rgba(214, 168, 79, 0.18);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .benefit {
+      padding: 24px;
+      min-height: 170px;
+    }
+
+    .benefit-icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      color: var(--gold-soft);
+      background: rgba(179, 19, 33, 0.28);
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .benefit h3 {
+      margin-bottom: 8px;
+      font-size: 1.12rem;
+    }
+
+    .benefit p,
+    .testimonial p,
+    .guarantee p,
+    .offer-copy {
+      color: var(--muted);
+    }
+
+    .testimonials {
+      background: rgba(0, 0, 0, 0.18);
+      border-block: 1px solid rgba(214, 168, 79, 0.12);
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .buyer-comments {
+      padding-top: 10px;
+    }
+
+    .comments-panel {
+      display: grid;
+      gap: 14px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .comment {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid rgba(214, 168, 79, 0.16);
+      border-radius: 8px;
+      background: rgba(20, 17, 15, 0.78);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      color: #1a0808;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      font-weight: 900;
+    }
+
+    .comment-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .comment-name {
+      font-weight: 900;
+    }
+
+    .verified {
+      color: var(--gold-soft);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .comment p {
+      color: var(--muted);
+    }
+
+    .testimonial {
+      padding: 24px;
+    }
+
+    .stars {
+      color: var(--gold-soft);
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .person {
+      margin-top: 18px;
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .offer-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .offer-box {
+      padding: 36px;
+      background:
+        linear-gradient(135deg, rgba(214, 168, 79, 0.14), transparent 38%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.018));
+    }
+
+    .offer-label {
+      color: var(--gold-soft);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      margin-bottom: 6px;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 12px 0 18px;
+      color: var(--text);
+      font-size: clamp(3.2rem, 8vw, 5.8rem);
+      line-height: 0.9;
+      font-weight: 900;
+    }
+
+    .price small {
+      margin-top: 12px;
+      color: var(--gold-soft);
+      font-size: 1.4rem;
+    }
+
+    .offer-list {
+      display: grid;
+      gap: 10px;
+      margin: 24px 0 30px;
+      list-style: none;
+      color: var(--muted);
+    }
+
+    .offer-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .offer-list li::before {
+      content: "✓";
+      color: var(--gold-soft);
+      font-weight: 900;
+    }
+
+    .footer {
+      padding: 34px 0 42px;
+      color: rgba(248, 241, 232, 0.54);
+      text-align: center;
+      font-size: 0.86rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .hero {
+        gap: 34px;
+        padding-top: 42px;
+      }
+
+      .product-panel {
+        min-height: 430px;
+        justify-items: center;
+        padding-right: 0;
+      }
+
+      .benefits-grid,
+      .testimonial-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .nav {
+        padding: 18px 0;
+      }
+
+      .nav-link {
+        display: none;
+      }
+
+      .hero {
+        padding: 36px 0 46px;
+      }
+
+      h1 {
+        font-size: clamp(2.3rem, 13vw, 3.7rem);
+      }
+
+      .hero-actions,
+      .cta {
+        width: 100%;
+      }
+
+      .price-pill {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .product-panel {
+        min-height: 380px;
+      }
+
+      .ebook {
+        width: min(320px, 86vw);
+        transform: perspective(850px) rotateY(-6deg);
+      }
+
+      .page::before {
+        background-size: 360px auto, 240px auto;
+        background-position: right -150px top 70px, left -90px bottom 240px;
+        opacity: 0.12;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), black);
+      }
+
+      .product-panel::after {
+        right: 12px;
+        bottom: 36px;
+      }
+
+      section {
+        padding: 52px 0;
+      }
+
+      .benefits-grid,
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comment {
+        grid-template-columns: 42px 1fr;
+        padding: 16px;
+      }
+
+      .avatar {
+        width: 42px;
+        height: 42px;
+      }
+
+      .comment-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .benefit {
+        min-height: auto;
+      }
+
+      .offer-box {
+        padding: 26px 22px;
+      }
+
+      .price {
+        font-size: 4.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="container">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="#top" aria-label="Método Controle Total">
+          <span class="brand-mark">M</span>
+          <span>Método Controle Total</span>
+        </a>
+        <a class="nav-link" href="#oferta">Acessar por US$10</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="container hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Ebook digital discreto</p>
+          <h1>Recupere o Controle e Ganhe Mais <span class="highlight">Confiança</span></h1>
+          <p class="subheadline">Método simples para homens que desejam melhorar o autocontrole e a confiança.</p>
+          <div class="hero-actions">
+            <a class="cta" href="#oferta">Quero Acessar Agora</a>
+            <span class="price-pill">Apenas US$10</span>
+          </div>
+          <div class="trust-row" aria-label="Pontos de confiança">
+            <span>Acesso imediato</span>
+            <span>Compra discreta</span>
+          </div>
+        </div>
+
+        <div class="product-panel reveal" aria-label="Capa ilustrativa do ebook">
+          <div class="ebook">
+            <img class="ebook-cover" src="assets/metodo-controle-total-capa.png" alt="Capa do ebook Método Controle Total">
+          </div>
+        </div>
+      </section>
+
+      <section class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Benefícios</p>
+          <h2>Um caminho direto para fortalecer sua rotina e suas decisões.</h2>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="benefit reveal">
+            <div class="benefit-icon">01</div>
+            <h3>Mais controle</h3>
+            <p>Aprenda a reconhecer padrões e agir com mais clareza nos momentos importantes.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="benefit-icon">02</div>
+            <h3>Mais confiança</h3>
+            <p>Construa uma postura mais firme com pequenas práticas aplicáveis no dia a dia.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="benefit-icon">03</div>
+            <h3>Técnicas práticas</h3>
+            <p>Conteúdo objetivo, sem enrolação, pensado para ser colocado em ação rapidamente.</p>
+          </article>
+          <article class="benefit reveal">
+            <div class="benefit-icon">04</div>
+            <h3>Conteúdo discreto</h3>
+            <p>Receba o material digitalmente e estude no seu tempo, com privacidade.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="testimonials">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="section-kicker">Depoimentos</p>
+            <h2>Resultados relatados por leitores do método.</h2>
+          </div>
+
+          <div class="testimonial-grid">
+            <article class="testimonial reveal">
+              <div class="stars">★★★★★</div>
+              <p>"O material é direto e me ajudou a organizar melhor minha rotina. Gostei da linguagem simples."</p>
+              <div class="person">Carlos M.</div>
+            </article>
+            <article class="testimonial reveal">
+              <div class="stars">★★★★★</div>
+              <p>"Eu precisava de algo prático e discreto. As técnicas fizeram sentido já nos primeiros dias."</p>
+              <div class="person">Rafael S.</div>
+            </article>
+            <article class="testimonial reveal">
+              <div class="stars">★★★★★</div>
+              <p>"Foi uma leitura rápida, mas com boas ideias para recuperar disciplina e confiança."</p>
+              <div class="person">André L.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="container" id="oferta">
+        <div class="offer-wrap">
+          <div class="offer-box reveal">
+            <p class="offer-label">Oferta especial</p>
+            <h2>Acesse o ebook completo hoje.</h2>
+            <div class="price"><small>US$</small>10</div>
+            <p class="offer-copy">Um investimento simples para começar a desenvolver mais autocontrole, confiança e consistência.</p>
+            <ul class="offer-list">
+              <li>Ebook digital Método Controle Total</li>
+              <li>Acesso imediato após a compra</li>
+              <li>Conteúdo prático e discreto</li>
+            </ul>
+            <a class="cta" href="#" id="ctaButton">Quero Acessar Agora</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="container buyer-comments">
+        <div class="section-head reveal">
+          <p class="section-kicker">Comentários</p>
+          <h2>Quem comprou conta como foi a experiência.</h2>
+        </div>
+
+        <div class="comments-panel">
+          <article class="comment reveal">
+            <div class="avatar">JM</div>
+            <div>
+              <div class="comment-top">
+                <span class="comment-name">João M.</span>
+                <span class="verified">Compra verificada</span>
+              </div>
+              <p>"Comprei sem esperar muito e me surpreendi. O ebook é direto, fácil de seguir e já me ajudou a ter mais controle."</p>
+            </div>
+          </article>
+
+          <article class="comment reveal">
+            <div class="avatar">PR</div>
+            <div>
+              <div class="comment-top">
+                <span class="comment-name">Paulo R.</span>
+                <span class="verified">Compra verificada</span>
+              </div>
+              <p>"Funcionou para mim porque não enrola. Li em uma noite e comecei a aplicar as técnicas no dia seguinte."</p>
+            </div>
+          </article>
+
+          <article class="comment reveal">
+            <div class="avatar">LC</div>
+            <div>
+              <div class="comment-top">
+                <span class="comment-name">Lucas C.</span>
+                <span class="verified">Compra verificada</span>
+              </div>
+              <p>"Gostei do conteúdo discreto e prático. Depois de alguns dias percebi mais confiança e menos ansiedade."</p>
+            </div>
+          </article>
+
+          <article class="comment reveal">
+            <div class="avatar">FM</div>
+            <div>
+              <div class="comment-top">
+                <span class="comment-name">Felipe M.</span>
+                <span class="verified">Compra verificada</span>
+              </div>
+              <p>"Pelo valor, valeu muito. É simples, mas foi exatamente isso que fez eu conseguir colocar em prática."</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 Método Controle Total. Produto digital demonstrativo.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    document.getElementById('ctaButton').addEventListener('click', (event) => {
+      event.preventDefault();
+      alert('Obrigado pelo interesse! Conecte este botão ao seu checkout para vender o ebook por US$10.');
+    });
+  </script>
+</body>
+</html>
